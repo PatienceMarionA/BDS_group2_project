@@ -4,7 +4,7 @@ End-to-end workflow for classifying bean leaf diseases from images. The project 
 
 ## Project Structure
 - `Classification/` — training/validation/test image splits organized by class.
-- `train_model.py` — CPU-friendly training pipeline (data aug, fine-tuning, reports).
+- `train_model.py` — CPU-friendly training pipeline (data aug like zooming , filliping, fine-tuning, reports).
 - `models/` — saved weights (`bean_disease_final_model.h5`), class mapping, and training artifacts.
 - `streamlit_app.py` — web UI to upload a leaf photo and view predictions.
 - `SETUP.md` — quick environment notes.
