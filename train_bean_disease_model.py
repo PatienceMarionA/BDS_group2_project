@@ -93,7 +93,7 @@ train_datagen = ImageDataGenerator(
 # No augmentation for validation and test (only normalization)
 val_test_datagen = ImageDataGenerator(rescale=1./255)
 
-# Create generators
+# Create generators.
 train_generator = train_datagen.flow_from_directory(
     TRAIN_DIR,
     target_size=(IMG_SIZE, IMG_SIZE),
@@ -126,7 +126,7 @@ print(f"Training batches per epoch: {len(train_generator)}")
 print(f"Validation batches: {len(val_generator)}")
 
 # ============================================================================
-# 3. Build the Model (Transfer Learning with MobileNetV2)
+# 3. Build the Model-(Transfer Learning with MobileNetV2)
 # ============================================================================
 print("\n[3/8] Building model with MobileNetV2...")
 
