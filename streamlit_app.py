@@ -1,5 +1,5 @@
 """
-Streamlit interface for Bean Disease Classification
+Streamlit interface for Bean Disease Classification.
 """
 
 import json
@@ -22,6 +22,7 @@ DEFAULT_CONFIDENCE_THRESHOLD = 0.5
 
 @st.cache_data(show_spinner=False)
 def load_class_mapping(mapping_path: Path) -> Dict:
+    """Load class mapping from JSON file."""
     with open(mapping_path, "r") as f:
         mapping = json.load(f)
     return mapping
@@ -29,6 +30,7 @@ def load_class_mapping(mapping_path: Path) -> Dict:
 
 @st.cache_resource(show_spinner=True)
 def load_model(model_path: Path) -> tf.keras.Model:
+    """Load the trained Keras model."""
     return tf.keras.models.load_model(model_path)
 
 
@@ -37,6 +39,7 @@ def load_model(model_path: Path) -> tf.keras.Model:
 # ---------------------------------------------------------------------------
 
 def preprocess_image(image: Image.Image, target_size: int) -> np.ndarray:
+    """Preprocess image for model prediction."""
     image = image.convert("RGB")
     image = image.resize((target_size, target_size))
     array = np.array(image, dtype=np.float32) / 255.0
@@ -50,6 +53,7 @@ def predict(
     class_names: List[str],
     img_size: int,
 ) -> Tuple[str, float, Dict[str, float]]:
+    """Predict disease class from an image."""
     tensor = preprocess_image(image, img_size)
     probs = model.predict(tensor, verbose=0)[0]
     predicted_idx = int(np.argmax(probs))

@@ -1,6 +1,6 @@
 """
 Bean Disease Classification Model Training Script
-CPU-optimized training script for bean disease detection
+CPU-optimized training script for bean disease detection.
 """
 
 import os
@@ -56,7 +56,7 @@ print(f"Number of classes: {NUM_CLASSES}")
 
 # Count images
 def count_images(directory):
-    """Count total images in a directory"""
+    """Count total images in a directory."""
     count = 0
     for ext in ['*.jpg', '*.jpeg', '*.png']:
         count += len(list(directory.rglob(ext)))
@@ -246,6 +246,7 @@ print("Generating training visualizations...")
 print("="*60)
 
 def combine_histories(hist1, hist2):
+    """Combine two training history objects into one."""
     combined = {}
     for key in hist1.history.keys():
         combined[key] = hist1.history[key] + hist2.history[key]

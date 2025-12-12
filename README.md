@@ -63,7 +63,7 @@ Usage:
 ## Troubleshooting
 - TensorFlow install issues: stick to Python 3.8–3.12; try `pip install tensorflow-cpu` or `pip install tensorflow==2.15.0`.
 - Out-of-memory during training: reduce `BATCH_SIZE`, lower `IMG_SIZE`, or skip fine-tuning (Phase 2).
-- Incase of any missing model files when launching the app: run `train_model.py` first or place the provided artifacts in `models/`.
+- In case of any missing model files when launching the app: run `train_model.py` first or place the provided artifacts in `models/`.
 
 ## Extending
 - Add new disease classes by introducing new subfolders under each `Classification/{training,validation,test}/` split, then retrain.
