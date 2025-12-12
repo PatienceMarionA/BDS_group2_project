@@ -12,7 +12,7 @@ import tensorflow as tf
 from PIL import Image
 
 # ---------------------------------------------------------------------------
-# Constants and cached loaders
+# Constants and cached loaders 
 # ---------------------------------------------------------------------------
 
 MODEL_PATH = Path("models/bean_disease_final_model.h5")
@@ -33,7 +33,7 @@ def load_model(model_path: Path) -> tf.keras.Model:
 
 
 # ---------------------------------------------------------------------------
-# Prediction utilities
+# Code for Prediction utilities
 # ---------------------------------------------------------------------------
 
 def preprocess_image(image: Image.Image, target_size: int) -> np.ndarray:
