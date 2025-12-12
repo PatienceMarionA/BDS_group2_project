@@ -4,7 +4,7 @@ End-to-end workflow for classifying bean leaf diseases from images. The project 
 
 ## Project Structure
 - `Classification/` — training/validation/test image splits organized by class.
-- `train_model.py` — CPU-friendly training pipeline (data aug like zooming , filliping, fine-tuning, reports).
+- `train_model.py` — CPU-friendly training pipeline (data aug like zooming, filliping, fine-tuning, reports).
 - `models/` — saved weights (`bean_disease_final_model.h5`), class mapping, and training artifacts.
 - `streamlit_app.py` — web UI to upload a leaf photo and view predictions.
 - `SETUP.md` — quick environment notes.
@@ -63,7 +63,7 @@ Usage:
 ## Troubleshooting
 - TensorFlow install issues: stick to Python 3.8–3.12; try `pip install tensorflow-cpu` or `pip install tensorflow==2.15.0`.
 - Out-of-memory during training: reduce `BATCH_SIZE`, lower `IMG_SIZE`, or skip fine-tuning (Phase 2).
-- Missing model files when launching the app: run `train_model.py` first or place the provided artifacts in `models/`.
+- Incase of any missing model files when launching the app: run `train_model.py` first or place the provided artifacts in `models/`.
 
 ## Extending
 - Add new disease classes by introducing new subfolders under each `Classification/{training,validation,test}/` split, then retrain.
