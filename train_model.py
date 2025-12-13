@@ -3,23 +3,30 @@ Bean Disease Classification Model Training Script
 CPU-optimized training script for bean disease detection.
 """
 
+import json
 import os
-import numpy as np
+import warnings
+from pathlib import Path
+from typing import Dict
+
 import matplotlib
 matplotlib.use('Agg')  # Use non-interactive backend
 import matplotlib.pyplot as plt
-from pathlib import Path
+import numpy as np
+import seaborn as sns
 import tensorflow as tf
+from PIL import Image
+from sklearn.metrics import classification_report, confusion_matrix
 from tensorflow import keras
 from tensorflow.keras import layers, models
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.applications import MobileNetV2
-from tensorflow.keras.callbacks import ModelCheckpoint, EarlyStopping, ReduceLROnPlateau
-from sklearn.metrics import classification_report, confusion_matrix
-import seaborn as sns
-import json
-from PIL import Image
-import warnings
+from tensorflow.keras.callbacks import (
+    EarlyStopping,
+    ModelCheckpoint,
+    ReduceLROnPlateau,
+)
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+
 warnings.filterwarnings('ignore')
 
 # Set random seeds for reproducibility
@@ -55,8 +62,15 @@ print(f"\nClasses: {CLASS_NAMES}")
 print(f"Number of classes: {NUM_CLASSES}")
 
 # Count images
-def count_images(directory):
-    """Count total images in a directory."""
+def count_images(directory: Path) -> int:
+    """Count total images in a directory.
+    
+    Args:
+        directory: Path to directory to count images in.
+        
+    Returns:
+        Total number of image files found.
+    """
     count = 0
     for ext in ['*.jpg', '*.jpeg', '*.png']:
         count += len(list(directory.rglob(ext)))
@@ -245,8 +259,16 @@ print("\n" + "="*60)
 print("Generating training visualizations...")
 print("="*60)
 
-def combine_histories(hist1, hist2):
-    """Combine two training history objects into one."""
+def combine_histories(hist1: keras.callbacks.History, hist2: keras.callbacks.History) -> Dict[str, list]:
+    """Combine two training history objects into one.
+    
+    Args:
+        hist1: First training history object.
+        hist2: Second training history object.
+        
+    Returns:
+        Combined history dictionary with all metrics.
+    """
     combined = {}
     for key in hist1.history.keys():
         combined[key] = hist1.history[key] + hist2.history[key]
@@ -342,7 +364,7 @@ class_mapping = {
     'img_size': IMG_SIZE
 }
 
-with open('models/class_mapping.json', 'w') as f:
+with open('models/class_mapping.json', 'w', encoding='utf-8') as f:
     json.dump(class_mapping, f, indent=2)
 
 print(f"Class mapping saved to: models/class_mapping.json")

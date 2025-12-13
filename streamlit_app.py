@@ -4,7 +4,7 @@ Streamlit interface for Bean Disease Classification.
 
 import json
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Any
 
 import numpy as np
 import streamlit as st
@@ -21,16 +21,30 @@ DEFAULT_CONFIDENCE_THRESHOLD = 0.5
 
 
 @st.cache_data(show_spinner=False)
-def load_class_mapping(mapping_path: Path) -> Dict:
-    """Load class mapping from JSON file."""
-    with open(mapping_path, "r") as f:
+def load_class_mapping(mapping_path: Path) -> Dict[str, Any]:
+    """Load class mapping from JSON file.
+    
+    Args:
+        mapping_path: Path to the JSON file containing class mappings.
+        
+    Returns:
+        Dictionary containing class mapping information.
+    """
+    with open(mapping_path, "r", encoding="utf-8") as f:
         mapping = json.load(f)
     return mapping
 
 
 @st.cache_resource(show_spinner=True)
 def load_model(model_path: Path) -> tf.keras.Model:
-    """Load the trained Keras model."""
+    """Load the trained Keras model.
+    
+    Args:
+        model_path: Path to the saved Keras model file.
+        
+    Returns:
+        Loaded Keras model instance.
+    """
     return tf.keras.models.load_model(model_path)
 
 
@@ -39,7 +53,15 @@ def load_model(model_path: Path) -> tf.keras.Model:
 # ---------------------------------------------------------------------------
 
 def preprocess_image(image: Image.Image, target_size: int) -> np.ndarray:
-    """Preprocess image for model prediction."""
+    """Preprocess image for model prediction.
+    
+    Args:
+        image: PIL Image to preprocess.
+        target_size: Target size for resizing (width and height).
+        
+    Returns:
+        Preprocessed image array with shape (1, target_size, target_size, 3).
+    """
     image = image.convert("RGB")
     image = image.resize((target_size, target_size))
     array = np.array(image, dtype=np.float32) / 255.0
@@ -53,7 +75,17 @@ def predict(
     class_names: List[str],
     img_size: int,
 ) -> Tuple[str, float, Dict[str, float]]:
-    """Predict disease class from an image."""
+    """Predict disease class from an image.
+    
+    Args:
+        model: Trained Keras model for prediction.
+        image: PIL Image to classify.
+        class_names: List of class names in order.
+        img_size: Target image size for preprocessing.
+        
+    Returns:
+        Tuple containing predicted label, confidence score, and all class probabilities.
+    """
     tensor = preprocess_image(image, img_size)
     probs = model.predict(tensor, verbose=0)[0]
     predicted_idx = int(np.argmax(probs))
@@ -68,6 +100,11 @@ def predict(
 # ---------------------------------------------------------------------------
 
 def show_sidebar_info(class_names: List[str]) -> None:
+    """Display sidebar information including usage instructions and class descriptions.
+    
+    Args:
+        class_names: List of class names to display.
+    """
     st.sidebar.header("How to Use")
     st.sidebar.markdown(
         """
@@ -103,6 +140,15 @@ def show_prediction_results(
     probabilities: Dict[str, float],
     threshold: float,
 ) -> None:
+    """Display prediction results including image, label, and probability table.
+    
+    Args:
+        image: The uploaded image.
+        label: Predicted class label.
+        confidence: Confidence score for the prediction.
+        probabilities: Dictionary mapping class names to probabilities.
+        threshold: Confidence threshold for highlighting predictions.
+    """
     col1, col2 = st.columns([2, 1])
     with col1:
         st.subheader("Uploaded Image")
